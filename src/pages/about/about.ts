@@ -37,7 +37,7 @@ export class AboutPage {
       .subscribe(data => {
         console.log(data);
         // this.zone.run(() => this.entrants = data);
-        this.price = d`ata;
+        this.price = data;
 
       });
 
