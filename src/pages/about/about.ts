@@ -3,6 +3,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { NavController } from 'ionic-angular';
+import {apiSecret, apiKey, verDate} from '../../app/keys';
+
+// Coinbase API
+import Coinbase from 'coinbase';
 
 @Component({
   selector: 'page-about',
@@ -17,32 +21,23 @@ export class AboutPage {
   }
 
   ionViewDidLoad() {
-    // var Client = require('coinbase').Client; 
 
-    // var client = new Client({
-    //   'apiKey': 'wYNNRaoTy4bDuGfD',
-    //   'apiSecret': 'xa6sCLKC1EaaVO87PKVDEkkpLRNK2om1',
-    // });
-    // // 'version':'2018-02-08 '    
-    // // var currencyCode = 'CAD'  // can also use EUR, CAD, etc.
-    
-    // // Make the request
-    // client.getSpotPrice({'currencyPair': 'BTC-USD'}, function(err, price) {
-    //   console.log(price);
-    // });
+    console.dir(Coinbase)
 
-    this.http.get('https://api.coinbase.com/v2/prices/BTC-USD/spot')
-      .map(res => res.json())
+    var Client = Coinbase.Client;
 
-      .subscribe(data => {
-        console.log(data);
-        // this.zone.run(() => this.entrants = data);
-        this.price = data;
+    var client = new Client({
+      'apiKey': apiKey,
+      'apiSecret': apiSecret,
+      'version': verDate
+    });
 
-      });
+    var currencyCode = 'USD'  // can also use EUR, CAD, etc.
 
-
-
+    // Make the request
+    client.getSpotPrice({'currency': currencyCode}, function(err, price) {
+      console.log('Current bitcoin price in ' + currencyCode + ': ' +  price.data.amount);
+    });
   }
 
   
